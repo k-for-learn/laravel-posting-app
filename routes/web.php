@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Postcontroller;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,11 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [Postcontroller::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
 
-Route::get('/dashboard', function () {
+/*Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -27,5 +26,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+*/
+require __DIR__ . '/auth.php';
+/*
+Route::get('/posts', [Postcontroller::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
+Route::get('/posts/create', [Postcontroller::class, 'create'])->middleware(['auth', 'verified'])->name('posts.create');
+Route::post('/posts', [Postcontroller::class, 'store'])->middleware(['auth', 'verified'])->name('posts.store');
 
-require __DIR__.'/auth.php';
+Route::get('/posts/{post}', [Postcontroller::class, 'show'])->middleware(['auth', 'verified'])->name('posts.show');
+
+Route::get('/posts/{post}/edit', [Postcontroller::class, 'edit'])->middleware(['auth', 'verified'])->name('posts.edit');
+Route::patch('/posts/{post}', [Postcontroller::class, 'update'])->middleware(['auth', 'verified'])->name('posts.update');
+
+Route::delete('/posts/{post}', [Postcontroller::class, 'destroy'])->middleware(['auth', 'verified'])->name('posts.destroy');
+*/ 
+Route::resource('posts',Postcontroller::class)->middleware(['auth', 'verified']);
